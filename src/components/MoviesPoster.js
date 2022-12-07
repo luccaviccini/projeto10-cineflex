@@ -31,9 +31,9 @@ const MoviesPosterContainer = styled.div`
   background-color: #FFFFFF;
   margin-top: 167px;  
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;  
-  column-gap: 2px;
+  column-gap: 46px;
   row-gap: 27px;
 
     

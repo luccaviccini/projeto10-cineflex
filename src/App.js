@@ -5,27 +5,29 @@ import Sessions from "./components/Sessions"
 import { useEffect, useState } from 'react';
 import styled from "styled-components";
 import GlobalStyle from "./theme/GlobalStyles";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 
 
 
 export default function App() {
 
-  
+  const [movies, setMovies] = useState([]);  
 
 
 
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle />
       <ScreenContainer>
         <Header />
         <TextInfo />
-        {/* <MoviesPoster /> */}
-        <Sessions />
+        <Routes>
+          <Route path='/' element={<MoviesPoster movies = {movies} setMovies={setMovies}/>}/>
+          <Route path='/sessions' element={<Sessions/>}/>          
+        </Routes>        
       </ScreenContainer>
-    </>
-    
+    </BrowserRouter>
   );
 }
 

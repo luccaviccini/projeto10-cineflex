@@ -2,10 +2,13 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import apiURLs from "./apiURLs";
+
+import { Link } from "react-router-dom";
 //https://mock-api.driven.com.br/api/v8/cineflex/movies
 
-export default function MoviesPoster() {
-  const [movies, setMovies] = useState([]);
+export default function MoviesPoster({movies, setMovies }) {
+
+  
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -24,23 +27,22 @@ export default function MoviesPoster() {
     fetchItems();
   }, []);
 
-  return(isLoading ? (
-    <LoaderContainer> 
+  return isLoading ? (
+    <LoaderContainer>
       <div className="spinner"></div>
     </LoaderContainer>
-    ) : 
-    error ? (
+  ) : error ? (
     <LoaderContainer>
       <div className="errorMsg">Erro ao carregar os filmes :( </div>
     </LoaderContainer>
-    ) :
-    (
+  ) : (
     <MoviesPosterContainer>
       {movies.map((movie) => (
-        <img key={movie.id} src={movie.posterURL} alt="posterURL"></img>
+        <Link to="/sessions">
+          <img key={movie.id} src={movie.posterURL} alt="posterURL"></img>
+        </Link>
       ))}
     </MoviesPosterContainer>
-    )
   );
     
 }

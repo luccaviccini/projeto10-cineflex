@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export default function TextInfo() {
   return (
     <TextInfoContainer>
+      
       <h1>Selecione o filme</h1>
     </TextInfoContainer>
   );

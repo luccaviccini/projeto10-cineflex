@@ -1,10 +1,12 @@
 import Header from './components/Header'
 import TextInfo from './components/TextInfo'
 import MoviesPoster from './components/MoviesPoster'
-
+import Sessions from "./components/Sessions"
 import { useEffect, useState } from 'react';
 import styled from "styled-components";
 import GlobalStyle from "./theme/GlobalStyles";
+
+
 
 
 export default function App() {
@@ -19,7 +21,8 @@ export default function App() {
       <ScreenContainer>
         <Header />
         <TextInfo />
-        <MoviesPoster />
+        {/* <MoviesPoster /> */}
+        <Sessions />
       </ScreenContainer>
     </>
     

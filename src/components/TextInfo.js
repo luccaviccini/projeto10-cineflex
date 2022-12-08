@@ -10,14 +10,13 @@ export default function TextInfo() {
 
 const TextInfoContainer = styled.div`
   width: 100vw;
-  height: 100px;
+  min-height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 67px;
-  z-index: 1;
-  background-color: #FFFFFF; // remover depois
+  margin-top: 67px;
+  
+  background-color: #fff; // remover depois
 
   h1 {
     font-family: "Roboto";

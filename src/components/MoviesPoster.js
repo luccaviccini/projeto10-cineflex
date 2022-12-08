@@ -7,45 +7,48 @@ import apiURLs from "./apiURLs";
 export default function MoviesPoster() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchItems = async () => {
-      try{
+      try {
         const response = await axios.get(apiURLs.getMovies);
         setMovies(response.data);
         setIsLoading(false);
       } catch (err) {
-        console.log(err)        
+        setError(err)
+        setIsLoading(false);
+        console.log(err)
       }
-    }
+    };
     fetchItems();
   }, []);
-      
 
-  if (isLoading) {
-    return (
-      <LoaderContainer>
-        <div className="spinner"></div>
-      </LoaderContainer>
-    );
-  }
-
-
-  return (
+  return(isLoading ? (
+    <LoaderContainer> 
+      <div className="spinner"></div>
+    </LoaderContainer>
+    ) : 
+    error ? (
+    <LoaderContainer>
+      <div className="errorMsg">Erro ao carregar os filmes :( </div>
+    </LoaderContainer>
+    ) :
+    (
     <MoviesPosterContainer>
       {movies.map((movie) => (
         <img key={movie.id} src={movie.posterURL} alt="posterURL"></img>
       ))}
     </MoviesPosterContainer>
+    )
   );
+    
 }
 
 const MoviesPosterContainer = styled.div`
   max-width: 1000px;
   width: 100vw;
-  background-color: #ffffff;
-  margin-top: 167px;
+  background-color: #fff; 
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -55,6 +58,10 @@ const MoviesPosterContainer = styled.div`
   img {
     width: 129px;
     height: 193px;
+  }
+
+  img:hover{
+    cursor: pointer;
   }
 `;
 
@@ -77,8 +84,21 @@ const LoaderContainer = styled.div`
     animation: spin-anim 1.2s linear infinite;
 
     @keyframes spin-anim {
-      0% {transform: rotate(0deg);}
-    100% {transform: rotate(360deg);}
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
-}
-`
+  }
+
+  .errorMsg {
+    color: #ff0f00;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+  }
+`;

@@ -1,22 +1,23 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import apiURLs from "./apiURLs";
+import { Link, useParams } from "react-router-dom";
 
-import { Link } from "react-router-dom";
 //https://mock-api.driven.com.br/api/v8/cineflex/movies
 
-export default function MoviesPoster({movies, setMovies }) {
+export default function Movies(props) {
 
-  
+  const [movies, setMovies] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(apiURLs.getMovies);
-        setMovies(response.data);
+        const res = await axios.get(
+          "https://mock-api.driven.com.br/api/v8/cineflex/movies"
+        );
+        setMovies(res.data);
         setIsLoading(false);
       } catch (err) {
         setError(err)
@@ -27,6 +28,8 @@ export default function MoviesPoster({movies, setMovies }) {
     fetchItems();
   }, []);
 
+
+  
   return isLoading ? (
     <LoaderContainer>
       <div className="spinner"></div>
@@ -36,18 +39,18 @@ export default function MoviesPoster({movies, setMovies }) {
       <div className="errorMsg">Erro ao carregar os filmes :( </div>
     </LoaderContainer>
   ) : (
-    <MoviesPosterContainer>
+    <MoviesContainer>
       {movies.map((movie) => (
-        <Link to="/sessions">
-          <img key={movie.id} src={movie.posterURL} alt="posterURL"></img>
+        <Link to={`/sessoes/${movie.id}`} key={movie.id}>
+          <img src={movie.posterURL} alt="posterURL"></img>
         </Link>
       ))}
-    </MoviesPosterContainer>
+    </MoviesContainer>
   );
     
 }
 
-const MoviesPosterContainer = styled.div`
+const MoviesContainer = styled.div`
   max-width: 1000px;
   width: 100vw;
   background-color: #fff; 
@@ -67,7 +70,7 @@ const MoviesPosterContainer = styled.div`
   }
 `;
 
-const LoaderContainer = styled.div`
+export const LoaderContainer = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;

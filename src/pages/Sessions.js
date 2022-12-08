@@ -1,72 +1,65 @@
 import styled from "styled-components";
 import movieImage from "../assets/images/2067.png"
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import LoaderContainer from "./Movies"
+
 
 export default function Sessions() {
-  return (
-    <SessionsContainer>
-      <Session>
-        <h1>Quinta-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
 
-      <Session>
-        <h1>Quinta-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>Quinta-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>Quinta-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>Quinta-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>Quinta-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>1-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>2-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>2-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>2-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
-      <Session>
-        <h1>2-feira - 24/06/2021</h1>
-        <button>15:00</button>
-        <button>19:00</button>
-      </Session>
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [sessions, setSessions] = useState([]);
+  const { idFilme } = useParams();
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(
+          `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`
+        );
+        setSessions(response.data);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err)
+        setIsLoading(false);
+        console.log(err)
+      }
+    };
+    fetchItems();
+  }, []);
+
+  return isLoading ? (
+    <LoaderContainer>
+      <div className="spinner"></div>
+    </LoaderContainer>
+  ) : error ? (
+    <LoaderContainer>
+      <div className="errorMsg">Erro ao carregar os filmes :( </div>
+    </LoaderContainer>
+  ) : (
+    <SessionsContainer>
+      {sessions.days.map((session) => (
+        <Session key={session.id}>
+          <h1>
+            {session.weekday} - {session.date}
+          </h1>
+          {session.showtimes.map((time) => (
+            <button key={time.id}>{time.name}</button>
+          ))}
+        </Session>
+      ))}
 
       <SessionsFooter>
-        <img src={movieImage} alt="movieImage"></img>
-        <h1>Enola Holmes</h1>
+        <img src={sessions.posterURL} alt="movieImage"></img>
+        <h1>{sessions.title}</h1>
       </SessionsFooter>
     </SessionsContainer>
   );
+  
+  
 }
 
 const SessionsContainer = styled.div`

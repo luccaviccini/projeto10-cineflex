@@ -1,39 +1,90 @@
 import TextInfo from "../components/TextInfo";
 import styled from "styled-components";
+import { SessionsFooter } from "./Sessions";
+import { Link, useParams } from "react-router-dom";
+import LoaderContainer from "./Movies";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+import Footer from "../components/Footer";
 
 export default function Seats() {
 
-  const numberOfSeats = [...Array(50).keys()].map((x) => ++x);
-  return (
-    <SeatsContainer>
-      <TextInfo text={`Selecione o(s) assento(s)`} />
-      <ul>
-        {numberOfSeats.map((seat) => (
-          <li key={seat}>
-            <button>{seat}</button>
-          </li>
-        ))}
-      </ul>
-      <ul className="bottom-key">
-        <div>
-          <button className="green"></button>
-          Selecionado
-        </div>
-        <div>
-          <button className="gray"></button>
-          Disponível
-        </div>
-        <div>
-          <button className="yellow"></button>
-          Indisponível
-        </div>        
-      </ul>
-    </SeatsContainer>
+  
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [seats, setSeats] = useState([]);  
+  const {idSessao} = useParams(); 
+
+
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const res = await axios.get(
+          `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
+        );
+        setSeats(res.data); 
+        setIsLoading(false);
+      } catch (err) {
+        setError(err)
+        setIsLoading(false);
+        console.log(err)
+      }
+    };
+    fetchItems();
+  }, []);
+
+
+
+
+  
+
+  return isLoading ? (
+    <LoaderContainer>
+      <div className="spinner"></div>
+    </LoaderContainer>
+  ) : error ? (
+    <LoaderContainer>
+      <div className="errorMsg">Erro ao carregar os filmes :( </div>
+    </LoaderContainer>
+  ) : (
+    <>
+      <SeatsContainer>
+        <TextInfo text={`Selecione o(s) assento(s)`} />
+        <ul>
+          {seats.seats.map((seat) => (
+            <li key={seat.id}>
+              <button className={seat.isAvailable ? "gray" : "yellow"}>
+                {seat.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <ul className="bottom-key">
+          <div>
+            <button className="green"></button>
+            Selecionado
+          </div>
+          <div>
+            <button className="gray"></button>
+            Disponível
+          </div>
+          <div>
+            <button className="yellow"></button>
+            Indisponível
+          </div>
+        </ul>
+      </SeatsContainer>
+      <Footer src={seats.movie.posterURL} title={seats.movie.title} />
+    </>
   );
 }
 
 
 const SeatsContainer = styled.div`
+  
   max-width: 413px;
   width: 100vw;
   background-color: #fff;
@@ -53,7 +104,7 @@ const SeatsContainer = styled.div`
     row-gap: 18px;
     padding: 0;
     margin: 0;
-    background-color: beige;
+    
     padding: 0px 29px;
   }
 
@@ -71,7 +122,7 @@ const SeatsContainer = styled.div`
 
   button:hover {
     cursor: pointer;
-    background-color: #e0e6eb;
+    opacity: 0.7;
   }
 
   div {
@@ -94,6 +145,11 @@ const SeatsContainer = styled.div`
   .yellow {
     background: #fbe192;
     border: 1px solid #f7c52b;
+  }
+
+  .gray {
+    background: #c3cfd9;
+    border: 1px solid #808f9d;
   }
 
   .bottom-key{

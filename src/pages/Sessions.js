@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import movieImage from "../assets/images/2067.png"
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LoaderContainer from "./Movies"
 import TextInfo from "../components/TextInfo";
+import Footer from "../components/Footer"
 
 
 export default function Sessions() {
@@ -49,17 +49,13 @@ export default function Sessions() {
             {session.weekday} - {session.date}
           </h1>
           {session.showtimes.map((time) => (
-            <Link key={time.id} to={`/assentos/1`}>
+            <Link key={time.id} to={`/assentos/${time.id}`}>
               <button>{time.name}</button>
             </Link>
           ))}
         </Session>
       ))}
-
-      <SessionsFooter>
-        <img src={sessions.posterURL} alt="movieImage"></img>
-        <h1>{sessions.title}</h1>
-      </SessionsFooter>
+      <Footer src={sessions.posterURL} title={sessions.title} />
     </SessionsContainer>
   );
   
@@ -118,7 +114,7 @@ const Session = styled.div`
   }
 `;
 
-const SessionsFooter = styled.div`
+export const SessionsFooter = styled.div`
   position: fixed;
   bottom: 0;
   width: 100vw;

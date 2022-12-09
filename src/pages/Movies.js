@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import TextInfo from "../components/TextInfo";
 
 //https://mock-api.driven.com.br/api/v8/cineflex/movies
@@ -53,9 +53,10 @@ export default function Movies(props) {
 }
 
 const MoviesContainer = styled.div`
+  box-sizing: border-box;
   max-width: 1000px;
   width: 100vw;
-  background-color: #fff; 
+  background-color: white; 
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -69,6 +70,7 @@ const MoviesContainer = styled.div`
 
   img:hover{
     cursor: pointer;
+    scale:1.1;
   }
 `;
 

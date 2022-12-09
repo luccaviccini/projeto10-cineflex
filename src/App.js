@@ -1,11 +1,10 @@
 //components
 import Header from './components/Header'
-import TextInfo from './components/TextInfo'//pages
 import Movies from './pages/Movies'
 import Sessions from "./pages/Sessions"
 import Seats from "./pages/Seats"
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from "styled-components";
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -15,7 +14,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 export default function App() {
 
-   
+   const [selections, setSelections] = useState([])
   
 
 
@@ -26,10 +25,10 @@ export default function App() {
         <Header />
         
         <Routes>
-          <Route path='/' element={<Movies />}/>
+          <Route path='/' element={<Movies setSelections = {setSelections}/>}/>
           <Route path='/sessoes/:idFilme' element={<Sessions/>}/>
           <Route path='/assentos/:idSessao' element={<Seats/>}/>
-          </Routes>        
+        </Routes>        
         
       </ScreenContainer>
     </BrowserRouter>

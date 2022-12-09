@@ -1,7 +1,6 @@
 //components
 import Header from './components/Header'
-import TextInfo from './components/TextInfo'
-//pages
+import TextInfo from './components/TextInfo'//pages
 import Movies from './pages/Movies'
 import Sessions from "./pages/Sessions"
 
@@ -24,7 +23,7 @@ export default function App() {
     <BrowserRouter>      
       <ScreenContainer>
         <Header />
-        <TextInfo />
+        
         <Routes>
           <Route path='/' element={<Movies />}/>
           <Route path='/sessoes/:idFilme' element={<Sessions/>}/>          

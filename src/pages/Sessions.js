@@ -4,11 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LoaderContainer from "./Movies"
+import TextInfo from "../components/TextInfo";
 
 
 export default function Sessions() {
 
-
+  
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sessions, setSessions] = useState([]);
@@ -41,6 +42,7 @@ export default function Sessions() {
     </LoaderContainer>
   ) : (
     <SessionsContainer>
+      <TextInfo text={`Selecione o horário`} />
       {sessions.days.map((session) => (
         <Session key={session.id}>
           <h1>

@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 
-export default function TextInfo() {
+export default function TextInfo(props) {
   return (
-    <TextInfoContainer>
-      
-      <h1>Selecione o filme</h1>
+    <TextInfoContainer>      
+      <h1>{props.text}</h1>
     </TextInfoContainer>
   );
 }

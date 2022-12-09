@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import TextInfo from "../components/TextInfo";
 
 //https://mock-api.driven.com.br/api/v8/cineflex/movies
 
@@ -40,6 +41,7 @@ export default function Movies(props) {
     </LoaderContainer>
   ) : (
     <MoviesContainer>
+      <TextInfo text={`Selecione o filme`} />
       {movies.map((movie) => (
         <Link to={`/sessoes/${movie.id}`} key={movie.id}>
           <img src={movie.posterURL} alt="posterURL"></img>

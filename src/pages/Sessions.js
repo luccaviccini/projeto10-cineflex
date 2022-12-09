@@ -49,7 +49,9 @@ export default function Sessions() {
             {session.weekday} - {session.date}
           </h1>
           {session.showtimes.map((time) => (
-            <button key={time.id}>{time.name}</button>
+            <Link key={time.id} to={`/assentos/1`}>
+              <button>{time.name}</button>
+            </Link>
           ))}
         </Session>
       ))}
@@ -108,6 +110,11 @@ const Session = styled.div`
     color: #fff;
     border: none;
     border-radius: 3px;
+  }
+  
+  button:hover{
+    cursor: pointer;
+    background-color: #f4a261; 
   }
 `;
 

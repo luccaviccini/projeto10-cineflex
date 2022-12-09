@@ -3,6 +3,7 @@ import Header from './components/Header'
 import TextInfo from './components/TextInfo'//pages
 import Movies from './pages/Movies'
 import Sessions from "./pages/Sessions"
+import Seats from "./pages/Seats"
 
 import { useEffect, useState } from 'react';
 import styled from "styled-components";
@@ -26,8 +27,10 @@ export default function App() {
         
         <Routes>
           <Route path='/' element={<Movies />}/>
-          <Route path='/sessoes/:idFilme' element={<Sessions/>}/>          
-        </Routes>        
+          <Route path='/sessoes/:idFilme' element={<Sessions/>}/>
+          <Route path='/assentos/:idSessao' element={<Seats/>}/>
+          </Routes>        
+        
       </ScreenContainer>
     </BrowserRouter>
   );

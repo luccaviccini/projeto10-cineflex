@@ -1,10 +1,34 @@
 import styled from "styled-components";
 
 export default function Footer(props) {
+  // if props.weekday is empty
+  
+  
+
+
+  
+
+
+  
   return (
+
+    (!props.weekday)?
+    (
     <FooterContainer>
       <img src={props.src} alt="logo" />
-      <h1>{props.title}</h1>
+      <div>
+        <h1>{props.title}</h1>
+      </div>
+    </FooterContainer>
+    )
+    :
+
+    <FooterContainer>
+      <img src={props.src} alt="logo" />
+      <div>
+        <h1>{props.title}</h1>
+        <p>{props.weekday} - {props.time} </p>
+      </div>
     </FooterContainer>
   );
 }
@@ -31,7 +55,7 @@ export default function Footer(props) {
     margin-right: 14px;
   }
 
-  h1 {
+  h1, p {
     font-family: "Roboto";
     font-style: normal;
     font-weight: 400;

@@ -77,7 +77,7 @@ export default function Seats() {
           </div>
         </ul>
       </SeatsContainer>
-      <Footer src={seats.movie.posterURL} title={seats.movie.title} />
+      <Footer src={seats.movie.posterURL} title={seats.movie.title} weekday={seats.day.weekday}  time={seats.name}/>
     </>
   );
 }

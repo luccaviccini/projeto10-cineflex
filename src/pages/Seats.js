@@ -1,6 +1,5 @@
 import TextInfo from "../components/TextInfo";
 import styled from "styled-components";
-import { SessionsFooter } from "./Sessions";
 import { Link, useParams } from "react-router-dom";
 import LoaderContainer from "./Movies";
 import axios from "axios";
@@ -8,16 +7,11 @@ import { useEffect, useState } from "react";
 
 import Footer from "../components/Footer";
 
-export default function Seats() {
-
-  
-
+export default function Seats({ selectedSeats, setSelectedSeats }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [seats, setSeats] = useState([]);  
-  const {idSessao} = useParams(); 
-
-
+  const [seats, setSeats] = useState([]);
+  const { idSessao } = useParams();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -25,21 +19,31 @@ export default function Seats() {
         const res = await axios.get(
           `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
         );
-        setSeats(res.data); 
+        setSeats(res.data);
         setIsLoading(false);
       } catch (err) {
-        setError(err)
+        setError(err);
         setIsLoading(false);
-        console.log(err)
+        console.log(err);
       }
     };
     fetchItems();
   }, []);
 
+  function handleClick(seat) {
+    if (seat.isAvailable && !selectedSeats.includes(seat.name)) {
+      setSelectedSeats([...selectedSeats, seat.name]);
+    } 
+    else if (seat.isAvailable && selectedSeats.includes(seat.name)) {
+      setSelectedSeats(selectedSeats.filter((s) => s !== seat.name));
+    }
+    else if(!seat.isAvailable)
+    {
+      alert("Esse assento não está disponível")
+    }
 
 
-
-  
+  }
 
   return isLoading ? (
     <LoaderContainer>
@@ -56,7 +60,15 @@ export default function Seats() {
         <ul>
           {seats.seats.map((seat) => (
             <li key={seat.id}>
-              <button className={seat.isAvailable ? "gray" : "yellow"}>
+              <button
+                onClick={() => handleClick(seat)}
+                className={
+                  !seat.isAvailable
+                    ? "yellow"
+                    : selectedSeats.includes(seat.name)
+                    ? "green"
+                    : "gray"
+                }>
                 {seat.name}
               </button>
             </li>
@@ -77,14 +89,17 @@ export default function Seats() {
           </div>
         </ul>
       </SeatsContainer>
-      <Footer src={seats.movie.posterURL} title={seats.movie.title} weekday={seats.day.weekday}  time={seats.name}/>
+      <Footer
+        src={seats.movie.posterURL}
+        title={seats.movie.title}
+        weekday={seats.day.weekday}
+        time={seats.name}
+      />
     </>
   );
 }
 
-
 const SeatsContainer = styled.div`
-  
   max-width: 413px;
   width: 100vw;
   background-color: #fff;
@@ -104,7 +119,7 @@ const SeatsContainer = styled.div`
     row-gap: 18px;
     padding: 0;
     margin: 0;
-    
+
     padding: 0px 29px;
   }
 
@@ -115,14 +130,13 @@ const SeatsContainer = styled.div`
     background: #c3cfd9;
     border: 1px solid #808f9d;
     border-radius: 12px;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
   }
 
   button:hover {
     cursor: pointer;
-    opacity: 0.7;
   }
 
   div {
@@ -152,7 +166,7 @@ const SeatsContainer = styled.div`
     border: 1px solid #808f9d;
   }
 
-  .bottom-key{
+  .bottom-key {
     justify-content: space-around;
   }
 `;

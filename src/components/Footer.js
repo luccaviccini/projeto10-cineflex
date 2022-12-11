@@ -1,33 +1,22 @@
 import styled from "styled-components";
 
 export default function Footer(props) {
-  // if props.weekday is empty
-  
-  
-
-
-  
-
-
-  
-  return (
-
-    (!props.weekday)?
-    (
-    <FooterContainer>
+ 
+  return !props.weekday ? (
+    <FooterContainer data-test="footer">
       <img src={props.src} alt="logo" />
       <div>
         <h1>{props.title}</h1>
       </div>
     </FooterContainer>
-    )
-    :
-
-    <FooterContainer>
+  ) : (
+    <FooterContainer data-test="footer">
       <img src={props.src} alt="logo" />
       <div>
         <h1>{props.title}</h1>
-        <p>{props.weekday} - {props.time} </p>
+        <p>
+          {props.weekday} - {props.time}{" "}
+        </p>
       </div>
     </FooterContainer>
   );

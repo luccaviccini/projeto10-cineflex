@@ -7,16 +7,14 @@ import { useEffect, useState } from "react";
 
 import Footer from "../components/Footer";
 
-export default function Seats({setsucessObj}) {
+export default function Seats({ setsucessObj }) {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [seats, setSeats] = useState([]);
-  const [selectedSeatsNumber, setselectedSeatsNumber] = useState([]) 
+  const [selectedSeatsNumber, setselectedSeatsNumber] = useState([]);
   const { idSessao } = useParams();
   const navigate = useNavigate();
-
-  
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -38,11 +36,12 @@ export default function Seats({setsucessObj}) {
   function handleClick(seat) {
     if (seat.isAvailable && !selectedSeats.includes(seat.id)) {
       setSelectedSeats([...selectedSeats, seat.id]);
-      setselectedSeatsNumber([...selectedSeatsNumber, seat.name])
-
+      setselectedSeatsNumber([...selectedSeatsNumber, seat.name]);
     } else if (seat.isAvailable && selectedSeats.includes(seat.id)) {
       setSelectedSeats(selectedSeats.filter((s) => s !== seat.id));
-      setselectedSeatsNumber(selectedSeatsNumber.filter((s) => s !== seat.name))
+      setselectedSeatsNumber(
+        selectedSeatsNumber.filter((s) => s !== seat.name)
+      );
     } else if (!seat.isAvailable) {
       alert("Esse assento não está disponível");
     }
@@ -53,18 +52,15 @@ export default function Seats({setsucessObj}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    
 
     // if no seats are selected
     if (selectedSeats.length === 0) {
       alert("Por favor, selecione pelo menos um assento");
-    }
-    else{
+    } else {
       const body = {
         ids: selectedSeats,
         name: name,
         cpf: cpf,
-        
       };
       const request = axios.post(
         `https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`,
@@ -79,22 +75,18 @@ export default function Seats({setsucessObj}) {
           time: seats.name,
           seats: selectedSeatsNumber,
           name: name,
-          cpf: cpf
-        })
+          cpf: cpf,
+        });
 
         // useNavigate to /sucesso
-        
+
         navigate("/sucesso");
       });
       request.catch(() => {
         console.log("Erro ao realizar a compra");
       });
-
     }
-
-    
   }
-
 
   return isLoading ? (
     <LoaderContainer>
@@ -112,6 +104,7 @@ export default function Seats({setsucessObj}) {
           {seats.seats.map((seat) => (
             <li key={seat.id}>
               <button
+                data-test="seat"
                 onClick={() => handleClick(seat)}
                 className={
                   !seat.isAvailable
@@ -145,6 +138,7 @@ export default function Seats({setsucessObj}) {
           <div>
             <label htmlFor="name">Nome do Comprador:</label>
             <input
+              data-test="client-name"
               id="name"
               type="text"
               placeholder="Digite seu nome..."
@@ -157,6 +151,7 @@ export default function Seats({setsucessObj}) {
           <div>
             <label htmlFor="cpf">CPF do comprador:</label>
             <input
+              data-test="client-cpf"
               id="cpf"
               type="text"
               placeholder="Digite seu CPF..."
@@ -166,7 +161,9 @@ export default function Seats({setsucessObj}) {
             />
           </div>
 
-          <button type="submit">Reservar assento(s)</button>
+          <button data-test="book-seat-btn" type="submit">
+            Reservar assento(s)
+          </button>
         </form>
       </FormContainer>
 
@@ -279,7 +276,7 @@ const FormContainer = styled.div`
 
   button:hover {
     cursor: pointer;
-    opacity:0.9;
+    opacity: 0.9;
   }
 
   input {

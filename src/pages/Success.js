@@ -3,11 +3,15 @@ import styled from "styled-components";
 
 export default function Success({ sucessObj }) {
   const { movie, date, time, seats, name, cpf } = { ...sucessObj };
+
+  function formatCPF(cpf){
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+  }
   return (
     <SucessContainer>
       <h1>Pedido feito com sucesso!</h1>
 
-      <InfoContainer>
+      <InfoContainer data-test="movie-info">
         <h2>Filme e sessão</h2>
         <p>{movie}</p>
         <p>
@@ -15,21 +19,21 @@ export default function Success({ sucessObj }) {
         </p>
       </InfoContainer>
 
-      <InfoContainer>
+      <InfoContainer data-test="seats-info">
         <h2>Ingressos</h2>
         {seats.map((seat) => (
           <p key={seat}>Assento {seat}</p>
         ))}
       </InfoContainer>
 
-      <InfoContainer>
+      <InfoContainer data-test="client-info">
         <h2>Comprador</h2>
         <p>Nome: {name}</p>
-        <p>CPF: {cpf}</p>
+        <p>CPF: {formatCPF(cpf)}</p>
       </InfoContainer>
 
       <Link to="/">
-        <button>Voltar para Home</button>
+        <button data-test="go-home-btn">Voltar para Home</button>
       </Link>
     </SucessContainer>
   );
@@ -71,11 +75,17 @@ const SucessContainer = styled.div`
     color: #ffffff;
     border: none;
   }
+
+  button:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
 `;
 
 const InfoContainer = styled.div`
   box-sizing: border-box;
   width: 100vw;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: start;

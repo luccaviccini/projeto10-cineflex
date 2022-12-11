@@ -44,13 +44,13 @@ export default function Sessions() {
     <SessionsContainer>
       <TextInfo text={`Selecione o horário`} />
       {sessions.days.map((session) => (
-        <Session key={session.id}>
+        <Session data-test="movie-day" key={session.id}>
           <h1>
             {session.weekday} - {session.date}
           </h1>
           {session.showtimes.map((time) => (
             <Link key={time.id} to={`/assentos/${time.id}`}>
-              <button>{time.name}</button>
+              <button data-test="showtime">{time.name}</button>
             </Link>
           ))}
         </Session>

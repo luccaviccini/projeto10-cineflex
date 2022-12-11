@@ -44,7 +44,9 @@ export default function Movies(props) {
       <TextInfo text={`Selecione o filme`} />
       {movies.map((movie) => (
         <Link to={`/sessoes/${movie.id}`} key={movie.id}>
-          <img src={movie.posterURL} alt="posterURL"></img>
+          <div data-test="movie">
+            <img data-test="movie" src={movie.posterURL} alt="posterURL"></img>
+          </div>
         </Link>
       ))}
     </MoviesContainer>

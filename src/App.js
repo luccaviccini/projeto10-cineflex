@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Movies from "./pages/Movies";
 import Sessions from "./pages/Sessions";
 import Seats from "./pages/Seats";
+import Success from "./pages/Success";
 
 import { useState } from "react";
 import styled from "styled-components";
@@ -10,8 +11,9 @@ import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function App() {
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  console.log(selectedSeats);
+  
+  const [sucessObj, setsucessObj] = useState({});
+  console.log(sucessObj);
 
   return (
     <BrowserRouter>
@@ -25,11 +27,11 @@ export default function App() {
             path="/assentos/:idSessao"
             element={
               <Seats
-                selectedSeats={selectedSeats}
-                setSelectedSeats={setSelectedSeats}
+                setsucessObj = {setsucessObj}
               />
             }
           />
+          <Route path="/sucesso" element={<Success sucessObj={sucessObj} />} />
         </Routes>
       </ScreenContainer>
     </BrowserRouter>

@@ -1,17 +1,22 @@
 import TextInfo from "../components/TextInfo";
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoaderContainer from "./Movies";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 import Footer from "../components/Footer";
 
-export default function Seats({ selectedSeats, setSelectedSeats }) {
+export default function Seats({setsucessObj}) {
+  const [selectedSeats, setSelectedSeats] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [seats, setSeats] = useState([]);
+  const [selectedSeatsNumber, setselectedSeatsNumber] = useState([]) 
   const { idSessao } = useParams();
+  const navigate = useNavigate();
+
+  
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -31,19 +36,65 @@ export default function Seats({ selectedSeats, setSelectedSeats }) {
   }, []);
 
   function handleClick(seat) {
-    if (seat.isAvailable && !selectedSeats.includes(seat.name)) {
-      setSelectedSeats([...selectedSeats, seat.name]);
-    } 
-    else if (seat.isAvailable && selectedSeats.includes(seat.name)) {
-      setSelectedSeats(selectedSeats.filter((s) => s !== seat.name));
-    }
-    else if(!seat.isAvailable)
-    {
-      alert("Esse assento não está disponível")
-    }
+    if (seat.isAvailable && !selectedSeats.includes(seat.id)) {
+      setSelectedSeats([...selectedSeats, seat.id]);
+      setselectedSeatsNumber([...selectedSeatsNumber, seat.name])
 
-
+    } else if (seat.isAvailable && selectedSeats.includes(seat.id)) {
+      setSelectedSeats(selectedSeats.filter((s) => s !== seat.id));
+      setselectedSeatsNumber(selectedSeatsNumber.filter((s) => s !== seat.name))
+    } else if (!seat.isAvailable) {
+      alert("Esse assento não está disponível");
+    }
   }
+
+  const [name, setName] = useState("");
+  const [cpf, setCPF] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    
+
+    // if no seats are selected
+    if (selectedSeats.length === 0) {
+      alert("Por favor, selecione pelo menos um assento");
+    }
+    else{
+      const body = {
+        ids: selectedSeats,
+        name: name,
+        cpf: cpf,
+        
+      };
+      const request = axios.post(
+        `https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`,
+        body
+      );
+      request.then(() => {
+        console.log("Compra realizada com sucesso!");
+
+        setsucessObj({
+          movie: seats.movie.title,
+          date: seats.day.date,
+          time: seats.name,
+          seats: selectedSeatsNumber,
+          name: name,
+          cpf: cpf
+        })
+
+        // useNavigate to /sucesso
+        
+        navigate("/sucesso");
+      });
+      request.catch(() => {
+        console.log("Erro ao realizar a compra");
+      });
+
+    }
+
+    
+  }
+
 
   return isLoading ? (
     <LoaderContainer>
@@ -65,7 +116,7 @@ export default function Seats({ selectedSeats, setSelectedSeats }) {
                 className={
                   !seat.isAvailable
                     ? "yellow"
-                    : selectedSeats.includes(seat.name)
+                    : selectedSeats.includes(seat.id)
                     ? "green"
                     : "gray"
                 }>
@@ -90,15 +141,29 @@ export default function Seats({ selectedSeats, setSelectedSeats }) {
         </ul>
       </SeatsContainer>
       <FormContainer>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name">Nome do Comprador:</label>
-            <input id="name" type="text" placeholder="Digite seu nome..." />
+            <input
+              id="name"
+              type="text"
+              placeholder="Digite seu nome..."
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </div>
 
           <div>
             <label htmlFor="cpf">CPF do comprador:</label>
-            <input id="cpf" type="text" placeholder="Digite seu CPF..." />
+            <input
+              id="cpf"
+              type="text"
+              placeholder="Digite seu CPF..."
+              value={cpf}
+              onChange={(e) => setCPF(e.target.value)}
+              required
+            />
           </div>
 
           <button type="submit">Reservar assento(s)</button>
@@ -188,15 +253,13 @@ const SeatsContainer = styled.div`
 `;
 
 const FormContainer = styled.div`
-  form{
-    
-    display: column;    
+  form {
+    display: column;
     margin-top: 42px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-    
 
   button {
     width: 225px;
@@ -212,6 +275,11 @@ const FormContainer = styled.div`
     letter-spacing: 0.04em;
     color: #ffffff;
     border: none;
+  }
+
+  button:hover {
+    cursor: pointer;
+    opacity:0.9;
   }
 
   input {
@@ -237,10 +305,9 @@ const FormContainer = styled.div`
     font-size: 19px;
     line-height: 21px;
     color: #293845;
-
   }
 
-  div{
+  div {
     display: flex;
     flex-direction: column;
     margin-bottom: 18px;

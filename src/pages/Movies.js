@@ -40,9 +40,11 @@ export default function Movies(props) {
     <MoviesContainer>
       <TextInfo text={`Selecione o filme`} />
       {movies.map((movie) => (
-        <Link to={`/sessoes/${movie.id}`} key={movie.id} data-test="movie">
-          <img data-test="movie" src={movie.posterURL} alt="posterURL"></img>
-        </Link>
+        <div data-test="movie">
+          <Link to={`/sessoes/${movie.id}`} key={movie.id}>
+            <img src={movie.posterURL} alt="posterURL"></img>
+          </Link>
+        </div>
       ))}
     </MoviesContainer>
   );

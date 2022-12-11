@@ -7,8 +7,7 @@ import TextInfo from "../components/TextInfo";
 //https://mock-api.driven.com.br/api/v8/cineflex/movies
 
 export default function Movies(props) {
-
-  const [movies, setMovies] = useState([]); 
+  const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -21,16 +20,14 @@ export default function Movies(props) {
         setMovies(res.data);
         setIsLoading(false);
       } catch (err) {
-        setError(err)
+        setError(err);
         setIsLoading(false);
-        console.log(err)
+        console.log(err);
       }
     };
     fetchItems();
   }, []);
 
-
-  
   return isLoading ? (
     <LoaderContainer>
       <div className="spinner"></div>
@@ -43,22 +40,19 @@ export default function Movies(props) {
     <MoviesContainer>
       <TextInfo text={`Selecione o filme`} />
       {movies.map((movie) => (
-        <Link to={`/sessoes/${movie.id}`} key={movie.id}>
-          <div data-test="movie">
-            <img data-test="movie" src={movie.posterURL} alt="posterURL"></img>
-          </div>
+        <Link to={`/sessoes/${movie.id}`} key={movie.id} data-test="movie">
+          <img data-test="movie" src={movie.posterURL} alt="posterURL"></img>
         </Link>
       ))}
     </MoviesContainer>
   );
-    
 }
 
 const MoviesContainer = styled.div`
   box-sizing: border-box;
   max-width: 1000px;
   width: 100vw;
-  background-color: white; 
+  background-color: white;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -70,9 +64,9 @@ const MoviesContainer = styled.div`
     height: 193px;
   }
 
-  img:hover{
+  img:hover {
     cursor: pointer;
-    scale:1.1;
+    scale: 1.1;
   }
 `;
 

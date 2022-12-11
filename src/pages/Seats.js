@@ -89,6 +89,22 @@ export default function Seats({ selectedSeats, setSelectedSeats }) {
           </div>
         </ul>
       </SeatsContainer>
+      <FormContainer>
+        <form>
+          <div>
+            <label htmlFor="name">Nome do Comprador:</label>
+            <input id="name" type="text" placeholder="Digite seu nome..." />
+          </div>
+
+          <div>
+            <label htmlFor="cpf">CPF do comprador:</label>
+            <input id="cpf" type="text" placeholder="Digite seu CPF..." />
+          </div>
+
+          <button type="submit">Reservar assento(s)</button>
+        </form>
+      </FormContainer>
+
       <Footer
         src={seats.movie.posterURL}
         title={seats.movie.title}
@@ -168,5 +184,66 @@ const SeatsContainer = styled.div`
 
   .bottom-key {
     justify-content: space-around;
+  }
+`;
+
+const FormContainer = styled.div`
+  form{
+    
+    display: column;    
+    margin-top: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+    
+
+  button {
+    width: 225px;
+    height: 42px;
+    background: #e8833a;
+    border-radius: 3px;
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    border: none;
+  }
+
+  input {
+    width: 327px;
+    height: 51px;
+    background: #ffffff;
+    border: 1px solid #d5d5d5;
+    border-radius: 3px;
+
+    font-family: "Roboto", sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    color: #afafaf;
+    padding-left: 18px;
+  }
+
+  label {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 21px;
+    color: #293845;
+
+  }
+
+  div{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+    align-content: start;
   }
 `;

@@ -88,8 +88,7 @@ const Session = styled.div`
     align-items: center;
     letter-spacing: 0.02em;
     color: #293845;
-
-    margin-bottom: 25px;
+    margin-bottom: 5px;
   }
 
   button {

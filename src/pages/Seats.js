@@ -250,6 +250,8 @@ const SeatsContainer = styled.div`
 `;
 
 const FormContainer = styled.div`
+  padding-bottom: 180px;
+  
   form {
     display: column;
     margin-top: 42px;
